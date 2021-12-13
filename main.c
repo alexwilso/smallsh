@@ -162,10 +162,6 @@ void runShell(char *newargv[], char inputFile[], char outputFile[], int pidArray
             sigaction(SIGINT, &SIGINT_action, NULL);
             }
 
-            // set sigstop to ignore
-            SIGTSTP_action.sa_handler = SIG_IGN;
-            sigaction(SIGTSTP, &SIGTSTP_action, NULL);
-
             // redirecting file for output
             if (strlen(outputFile) != 0)
             {
