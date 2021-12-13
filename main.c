@@ -125,6 +125,8 @@ void runShell(char *newargv[], char inputFile[], char outputFile[], int pidArray
             }
             // Terminate parent
             printf("Terminating Self\n");
+            free(lastBackgroundPid);
+            free(lastForegroundPid);
             kill(pid, SIGKILL);
             fflush(stdout);
             exit(0);
@@ -431,13 +433,11 @@ int main(){
     int pidArray[100];
     // last removed background process id
     int *lastBackgroundPid;
-    int c = 0;
-    lastBackgroundPid = &c;
+    lastBackgroundPid = malloc(sizeof(int));
     *lastBackgroundPid = 0;
     // last removed foreground process id
     int *lastForegroundPid;
-    int b = 0;
-    lastForegroundPid = &b;
+    lastForegroundPid = malloc(sizeof(int));
     *lastForegroundPid = 0;
     // Last pid terminated by sigint. Used to prevent message from firing more than once
     int lastSigIntDisplayed;
@@ -485,5 +485,7 @@ int main(){
     // Runs shell based on user input
     runShell(newargv, inputFile, outputFile, pidArray, background, lastBackgroundPid, lastForegroundPid, SIGINT_action, SIGTSTP_action);
     }
+    free(lastBackgroundPid);
+    free(lastForegroundPid);
     return 0;
 }
